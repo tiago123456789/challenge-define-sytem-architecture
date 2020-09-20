@@ -1,0 +1,5 @@
+authorization-authencation/.env
+authorization-authencation/node_modules/
+
+api-gateway/.env
+api-gateway/node_modules/
