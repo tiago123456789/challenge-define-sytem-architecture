@@ -7,7 +7,7 @@ const authEndpoint = authEndpointFactory();
 
 module.exports = (app) => {
 
-    app.post("/user/register", userEndpoint.register);
+    app.post("/users/register", userEndpoint.register);
     app.post("/auth/login", authEndpoint.authenticate);
     app.post("/auth/:hash/check", authEndpoint.checkSecondStepAuthentication);
 
