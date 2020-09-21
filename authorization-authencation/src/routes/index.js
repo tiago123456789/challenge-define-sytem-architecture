@@ -9,7 +9,7 @@ module.exports = (app) => {
 
     app.post("/user/register", userEndpoint.register);
     app.post("/auth/login", authEndpoint.authenticate);
-
+    app.post("/auth/:hash/check", authEndpoint.checkSecondStepAuthentication);
 
     // Handler exceptions api.
     app.use(handlerException);

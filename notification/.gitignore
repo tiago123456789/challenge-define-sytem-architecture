@@ -1,0 +1,16 @@
+# package directories
+node_modules
+jspm_packages
+
+# Serverless directories
+.serverless
+
+authorization-authencation/node_modules
+authorization-authencation/.env
+
+api-gateway/node_modules
+api-gateway/.env
+
+notification/.serverless
+notification/node_modules
+notification/.env.json

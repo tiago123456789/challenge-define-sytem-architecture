@@ -3,19 +3,22 @@ const connection = require("./../config/Database");
 class UserRepository {
 
     constructor() {
-        this._connection = connection("users");
     }
 
     insert(register) {
-        return this._connection.insert(register);
+        return connection("users").insert(register);
     }
 
     findByEmail(email) {
-        return this._connection.select().where("email", email).limit(1);
+        return connection("users").where("email", email).select().limit(1);
+    }
+
+    findByHash(hash) {
+        return connection("users").where("hash_step_2_authentication", hash).select();
     }
 
     update(id, datasModified) {
-        return this._connection.where("id", id).update(datasModified);
+        return connection("users").where("id", id).update(datasModified); 
     }
 }
 

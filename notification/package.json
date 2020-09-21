@@ -1,0 +1,17 @@
+{
+  "name": "notification",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "nodemailer": "^6.4.11"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "deploy": "serverless deploy --aws-profile aws-cli-tiago",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

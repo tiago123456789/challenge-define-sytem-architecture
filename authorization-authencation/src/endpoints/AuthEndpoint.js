@@ -7,6 +7,7 @@ class AuthEndpoint extends Endpoint {
         super();
         this._userService = userService;
         this.authenticate = this.authenticate.bind(this);
+        this.checkSecondStepAuthentication = this.checkSecondStepAuthentication.bind(this);
     }
 
     getRulesValidation() {
@@ -16,7 +17,21 @@ class AuthEndpoint extends Endpoint {
         });
     }
 
-
+    async checkSecondStepAuthentication(request, response, next) {
+        try {
+            const hash = request.params.hash;
+            const datas = request.body;
+            const accessToken = await this._userService.checkSecondStepAuthentication({
+                ...datas, hash
+            });
+            return response.json({
+                accessToken
+            });
+        } catch(error) {
+            next(error);
+        }
+    }
+    
     async authenticate(request, response, next) {
         try {
             const datas = request.body;

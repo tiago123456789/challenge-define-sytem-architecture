@@ -4,17 +4,40 @@ const SecurityException = require("common/exceptions/SecurityException");
 
 class UserService {
 
-    constructor(userRepository, encrypterUtil, uuidUtil, producer) {
+    constructor(userRepository, encrypterUtil, uuidUtil, producer, token) {
         this._userRepository = userRepository;
         this._encrypterUtil = encrypterUtil;
         this._uuidUtil = uuidUtil;
         this._producer = producer;
+        this._token = token;
+    }
+
+    async checkSecondStepAuthentication(credentials) {
+        let user = await this._userRepository.findByHash(credentials.hash);
+        user = user[0];
+
+        if (!user) {
+            throw new SecurityException("Code invalid!");
+        }
+
+        const isValidCode = user.requestId == credentials.code;
+        if (!isValidCode) {
+            throw new SecurityException("Code invalid!");
+        }
+
+        await this._userRepository.update(user.id, {
+            "hash_step_2_authentication": null,
+            "requestId": null
+        });
+
+        return this._token.build({
+            id: user.id
+        });
     }
 
     async authenticate(credentials) {
         let user = await this._userRepository.findByEmail(credentials.email);
         user = user[0];
-
         if (!user) {
             throw new SecurityException("Credentials invalids!");
         }
@@ -36,6 +59,7 @@ class UserService {
 
         await this._producer.sendMessage({
             MessageBody: JSON.stringify({
+                email: user.email,
                 codeVerification: datasAuthentication2Step.codeVerification
             })
         });
