@@ -14,10 +14,9 @@ class UserService {
             throw new NotFoundException("Não foi encontrada nenhuma pessoa com o cpf informado.")
         }
 
-        const debts = await this._userRepository.findDebtsByUserId(user.id);
-        return { ...user, debts };
+        const financialAssets = await this._userRepository.findFinancialAssetsByUserId(user.id);
+        return { ...user, financialAssets };
     }
-
 }
 
 module.exports = UserService;

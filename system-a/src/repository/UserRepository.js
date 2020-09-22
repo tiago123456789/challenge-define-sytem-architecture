@@ -10,7 +10,7 @@ class UserRepository {
     }
 
     findDebtsByUserId(userId) {
-        return connection("debts").where("user_id", userId).select("description", "value", "id");
+        return connection("debts").where("user_id", userId).select("description", "users", "id");
     }
 
 }

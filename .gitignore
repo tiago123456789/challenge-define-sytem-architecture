@@ -17,3 +17,6 @@ notification/.env.json
 
 system-a/node_modules
 system-a/.env
+
+system-b/node_modules
+system-b/.env
