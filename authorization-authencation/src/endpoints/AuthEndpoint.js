@@ -1,4 +1,5 @@
 const Endpoint = require("./Endpoint");
+const Constantes = require("common/constants/App");
 const Joi = require("joi");
 
 class AuthEndpoint extends Endpoint {
@@ -7,6 +8,7 @@ class AuthEndpoint extends Endpoint {
         super();
         this._userService = userService;
         this.authenticate = this.authenticate.bind(this);
+        this.checkValidToken = this.checkValidToken.bind(this);
         this.checkSecondStepAuthentication = this.checkSecondStepAuthentication.bind(this);
     }
 
@@ -27,6 +29,16 @@ class AuthEndpoint extends Endpoint {
             return response.json({
                 accessToken
             });
+        } catch(error) {
+            next(error);
+        }
+    }
+
+    async checkValidToken(request, response, next) {
+        try {
+            const accessToken = request.get(Constantes.HEADER_PARAM_AUTH)
+            await this._userService.checkValidToken(accessToken); 
+            return response.sendStatus(200);
         } catch(error) {
             next(error);
         }

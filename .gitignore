@@ -14,3 +14,6 @@ api-gateway/.env
 notification/.serverless
 notification/node_modules
 notification/.env.json
+
+system-a/node_modules
+system-a/.env

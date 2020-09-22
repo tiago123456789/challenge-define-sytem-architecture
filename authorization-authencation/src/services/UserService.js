@@ -1,6 +1,8 @@
 const BusinessLogicException = require("common/exceptions/BusinessLogicException");
 const InvalidDataException = require("common/exceptions/InvalidDatasException");
 const SecurityException = require("common/exceptions/SecurityException");
+const ForbiddenException = require("common/exceptions/ForbiddenException");
+
 
 class UserService {
 
@@ -10,6 +12,16 @@ class UserService {
         this._uuidUtil = uuidUtil;
         this._producer = producer;
         this._token = token;
+    }
+
+    async checkValidToken(accessToken) {
+        try {
+            accessToken = this._token.getWithoutPrefix(accessToken);
+            console.log(accessToken);
+            await this._token.isValid(accessToken);
+        } catch(error) {
+            throw new ForbiddenException("Token is invalid or expired!")
+        }
     }
 
     async checkSecondStepAuthentication(credentials) {
