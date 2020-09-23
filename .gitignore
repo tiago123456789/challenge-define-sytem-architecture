@@ -20,3 +20,6 @@ system-a/.env
 
 system-b/node_modules
 system-b/.env
+
+system-c/node_modules
+system-c/.env

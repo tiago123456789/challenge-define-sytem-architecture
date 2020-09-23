@@ -4,7 +4,6 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "knex:seed:run": "knex --knexfile ./src/knexfile.js seed:run",
     "knex:migrations:run": "npx knex --knexfile=./src/knexfile.js migrate:latest",
     "start": "pm2 start ./src/index.js",
     "start:dev": "nodemon ./src/index.js",

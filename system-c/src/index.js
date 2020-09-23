@@ -5,5 +5,5 @@ app.listen(process.env.PORT, (error) => {
         console.log(error);
         return;
     }
-    console.log("Api gateway is running");
+    console.log("Server is running");
 });

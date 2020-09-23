@@ -17,7 +17,6 @@ class UserService {
     async checkValidToken(accessToken) {
         try {
             accessToken = this._token.getWithoutPrefix(accessToken);
-            console.log(accessToken);
             await this._token.isValid(accessToken);
         } catch(error) {
             throw new ForbiddenException("Token is invalid or expired!")
