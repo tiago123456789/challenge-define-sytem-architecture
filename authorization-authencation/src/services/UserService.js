@@ -2,6 +2,7 @@ const BusinessLogicException = require("common/exceptions/BusinessLogicException
 const InvalidDataException = require("common/exceptions/InvalidDatasException");
 const SecurityException = require("common/exceptions/SecurityException");
 const ForbiddenException = require("common/exceptions/ForbiddenException");
+const TypeNotification = require("common/model/TypeNotification");
 
 
 class UserService {
@@ -46,16 +47,42 @@ class UserService {
         });
     }
 
+    _isMoreThan5TriesLoginFailed(user) {
+        return user.tries_login_failed > 5;
+    }
+
     async authenticate(credentials) {
+        
         let user = await this._userRepository.findByEmail(credentials.email);
         user = user[0];
+
+        if (this._isMoreThan5TriesLoginFailed(user)) {
+            await this._producer.sendMessage({
+                MessageBody: JSON.stringify({
+                    email: user.email,
+                    action: TypeNotification.ALERT_MORE_THAN_5_TRIES_LOGIN_FAILED
+                })
+            }); 
+            await this._userRepository.update(user.id, {
+                "tries_login_failed": 0
+            });
+            throw new SecurityException("Credentials invalids!");
+        }
+
         if (!user) {
             throw new SecurityException("Credentials invalids!");
         }
 
-        const isValidPassword = await this._encrypterUtil.compare(credentials.password, user.password);
-        if (!isValidPassword) {
-            throw new SecurityException("Credentials invalids!");
+        try {
+            const isValidPassword = await this._encrypterUtil.compare(credentials.password, user.password);
+            if (!isValidPassword) {
+                throw new SecurityException("Credentials invalids!");
+            }
+        } catch(error) {
+            await this._userRepository.update(user.id, {
+                "tries_login_failed": user.tries_login_failed + 1
+            });
+            throw error;
         }
         
         const datasAuthentication2Step = {
@@ -71,7 +98,8 @@ class UserService {
         await this._producer.sendMessage({
             MessageBody: JSON.stringify({
                 email: user.email,
-                codeVerification: datasAuthentication2Step.codeVerification
+                codeVerification: datasAuthentication2Step.codeVerification,
+                action: TypeNotification.CODE_VERIFICATION
             })
         });
 
