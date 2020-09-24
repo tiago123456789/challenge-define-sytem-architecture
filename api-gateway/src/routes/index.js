@@ -33,6 +33,7 @@ module.exports = (app) => {
     app.post("/users/register", (request, response, next) => {
         return authServiceProxy(request, response, next);
     });
+    
 
     app.post("/auth/login", (request, response, next) => {
         return authServiceProxy(request, response, next);
@@ -43,6 +44,10 @@ module.exports = (app) => {
     });
 
     app.get("/auth/check", (request, response, next) => {
+        return authServiceProxy(request, response, next);
+    });
+
+    app.get("/auth/logout", (request, response, next) => {
         return authServiceProxy(request, response, next);
     });
 

@@ -4,12 +4,13 @@ const Joi = require("joi");
 
 class AuthEndpoint extends Endpoint {
 
-    constructor(userService) {
+    constructor(userService, token) {
         super();
         this._userService = userService;
         this.authenticate = this.authenticate.bind(this);
         this.checkValidToken = this.checkValidToken.bind(this);
         this.checkSecondStepAuthentication = this.checkSecondStepAuthentication.bind(this);
+        this.logout = this.logout.bind(this);
     }
 
     getRulesValidation() {
@@ -29,6 +30,16 @@ class AuthEndpoint extends Endpoint {
             return response.json({
                 accessToken
             });
+        } catch(error) {
+            next(error);
+        }
+    }
+
+    async logout(request, response, next) {
+        try {
+            let accessToken = request.get(Constantes.HEADER_PARAM_AUTH);
+            await this._userService.logout(accessToken); 
+            return response.sendStatus(200);
         } catch(error) {
             next(error);
         }

@@ -7,17 +7,43 @@ const TypeNotification = require("common/model/TypeNotification");
 
 class UserService {
 
-    constructor(userRepository, encrypterUtil, uuidUtil, producer, token) {
+    constructor(userRepository, encrypterUtil, uuidUtil, producer, token, cache) {
         this._userRepository = userRepository;
         this._encrypterUtil = encrypterUtil;
         this._uuidUtil = uuidUtil;
         this._producer = producer;
         this._token = token;
+        this._cache = cache;
+    }
+
+    async _getTimeExpirationAcessToken(accessToken) {
+        let timeExpiration = await this._token.getValueInPayload('exp', accessToken);
+        timeExpiration = timeExpiration * 1000 - Date.now();
+        timeExpiration = timeExpiration / 1000;
+        timeExpiration = Math.ceil(timeExpiration);
+        return timeExpiration;
+    }
+
+    async _isAccessTokenInBlacklist(accessToken) {
+        accessToken = this._token.getWithoutPrefix(accessToken);
+        const accessTokenInCache = await this._cache.get(accessToken);
+        if (accessTokenInCache) {
+            throw new ForbiddenException("Token is invalid or expired!");
+        }
+    }
+
+    async logout(accessToken) {
+        accessToken = this._token.getWithoutPrefix(accessToken);
+        return this._cache.set(
+            accessToken, accessToken,
+            await this._getTimeExpirationAcessToken(accessToken)
+        );
     }
 
     async checkValidToken(accessToken) {
         try {
             accessToken = this._token.getWithoutPrefix(accessToken);
+            await this._isAccessTokenInBlacklist(accessToken);
             await this._token.isValid(accessToken);
         } catch(error) {
             throw new ForbiddenException("Token is invalid or expired!")
