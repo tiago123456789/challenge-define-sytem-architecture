@@ -11,10 +11,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "common": "git+ssh://git@github.com/tiago123456789/common.git",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mongoose": "^5.10.6",
-    "common": "git+ssh://git@github.com/tiago123456789/common.git"
+    "helmet": "^4.1.1",
+    "mongoose": "^5.10.6"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
