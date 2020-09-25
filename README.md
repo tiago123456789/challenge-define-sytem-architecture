@@ -70,3 +70,68 @@ Configurando notification para ambiente de produção:
 - Configurar **aws-cli** com as credenciais necessários para executar o próximo passo.
 - Executar o comando: **npm run deploy** para criar o servidor da aplicação.
 
+
+
+
+Configurando system-a para ambiente de desenvolvimento:
+----------------------------------------------------------
+
+- Clonar projeto
+- Na raiz do projeto execute o comando: **docker-composer up -d** para criar os containers com os banco de dados: mysql, mongodb e redis
+- Executar o comando: **cd ./system-a**
+- Executar o comando: **npm run knex:migrations:run** para rodar as migrations da aplicação.
+- Executar o comando: **npm run start knex:seed:run** para rodar as seeds da aplicação.
+- Criar arquivo **.env** baseado no arquivo **.env.example** na raiz do diretório **system-a** com as informações necessárias.
+- Executar o comando: **npm run start:dev** para criar o servidor da aplicação.
+
+Configurando system-a para ambiente de produção:
+----------------------------------------------------------
+
+- Clonar projeto
+- Executar o comando: **cd ./system-a**
+- Criar arquivo **.env** baseado no arquivo **.env.example** na raiz do diretório **system-a** com as informações necessárias.
+- Executar o comando: **npm start** para criar o servidor da aplicação.
+
+
+
+
+Configurando system-b para ambiente de desenvolvimento:
+----------------------------------------------------------
+
+- Clonar projeto
+- Na raiz do projeto execute o comando: **docker-composer up -d** para criar os containers com os banco de dados: mysql, mongodb e redis
+- Executar o comando: **cd ./system-b**
+- Executar o comando: **npm run knex:migrations:run** para rodar as migrations da aplicação.
+- Executar o comando: **npm run start knex:seed:run** para rodar as seeds da aplicação.
+- Criar arquivo **.env** baseado no arquivo **.env.example** na raiz do diretório **system-b** com as informações necessárias.
+- Executar o comando: **npm run start:dev** para criar o servidor da aplicação.
+
+Configurando system-b para ambiente de produção:
+----------------------------------------------------------
+
+- Clonar projeto
+- Executar o comando: **cd ./system-b**
+- Criar arquivo **.env** baseado no arquivo **.env.example** na raiz do diretório **system-b** com as informações necessárias.
+- Executar o comando: **npm start** para criar o servidor da aplicação.
+
+
+
+
+
+Configurando system-c para ambiente de desenvolvimento:
+----------------------------------------------------------
+
+- Clonar projeto
+- Na raiz do projeto execute o comando: **docker-composer up -d** para criar os containers com os banco de dados: mysql, mongodb e redis
+- Executar o comando: **cd ./system-c**
+- Criar arquivo **.env** baseado no arquivo **.env.example** na raiz do diretório **system-c** com as informações necessárias.
+- Executar o comando: **npm run start:dev** para criar o servidor da aplicação.
+
+Configurando system-c para ambiente de produção:
+----------------------------------------------------------
+
+- Clonar projeto
+- Executar o comando: **cd ./system-c**
+- Criar arquivo **.env** baseado no arquivo **.env.example** na raiz do diretório **system-c** com as informações necessárias.
+- Executar o comando: **npm start** para criar o servidor da aplicação.
+
