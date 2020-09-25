@@ -1,3 +1,9 @@
+Detalhes:
+==========
+
+- Os documentos explicando sobre a arquitetura está no diretório **documents**
+- Foi criado o seguinte repositório *https://github.com/tiago123456789/common* onde eu coloquei todo o código que era comum para as aplicações desse repositório. Não é necessário fazer nenhuma configuração o projeto common está sendo usando como uma dependencia nos projetos desse repositório aqui. O motivo disso é evitar duplicidade de código é reusar o máximo possível.
+
 Requisitos:
 ===========
 
